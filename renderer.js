@@ -2,8 +2,6 @@ const monacoLoader = require('monaco-loader');
 
 monacoLoader().then((monaco) => {
   var diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
-  // var originalModel = monaco.editor.createModel("heLLo world!", "text/plain");
-  // var modifiedModel = monaco.editor.createModel("hello orlando!", "text/plain");
   
   monaco.Promise.join([xhr('original.txt'), xhr('modified.txt')]).then((r) => {
     var originalTxt = r[0].responseText;
@@ -14,7 +12,8 @@ monacoLoader().then((monaco) => {
       modified: monaco.editor.createModel(modifiedTxt, 'text/plain')
     }); 
   })
-})
+
+}) 
 
 function xhr(url) {
   var req = null;
