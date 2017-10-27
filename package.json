@@ -1,10 +1,11 @@
 {
-  "name": "electron-quick-start",
+  "name": "opendiff",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package": "rm -rf out | electron-packager . --appname opendiff --out out"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -17,7 +18,8 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-packager": "^9.1.0"
   },
   "dependencies": {
     "monaco-editor": "^0.10.1",

@@ -12,7 +12,7 @@ monacoLoader().then((monaco) => {
     diffEditor.setModel({
       original: monaco.editor.createModel(originalTxt, 'text/plain'),
       modified: monaco.editor.createModel(modifiedTxt, 'text/plain')
-    });
+    }); 
   })
 })
 
