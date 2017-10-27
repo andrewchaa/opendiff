@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "monaco-editor": "^0.10.1",
-    "monaco-loader": "^0.8.2"
+    "monaco-loader": "^0.8.2",
+    "mousetrap": "^1.6.1"
   }
 }

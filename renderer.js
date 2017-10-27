@@ -1,9 +1,13 @@
 const monacoLoader = require('monaco-loader');
+const { remote } = require('electron');
+const Mousetrap = require('mousetrap')
+
+Mousetrap.bind('esc', () => { remote.getCurrentWindow().close() })
 
 monacoLoader().then((monaco) => {
   var diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
   
-  monaco.Promise.join([xhr('original.txt'), xhr('modified.txt')]).then((r) => {
+  monaco.Promise.join([xhr(remote.process.argv[1]), xhr(remote.process.argv[2])]).then((r) => {
     var originalTxt = r[0].responseText;
     var modifiedTxt = r[1].responseText;
 
@@ -14,6 +18,7 @@ monacoLoader().then((monaco) => {
   })
 
 }) 
+
 
 function xhr(url) {
   var req = null;
