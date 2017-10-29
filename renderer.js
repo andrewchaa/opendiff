@@ -2,12 +2,15 @@ const monacoLoader = require('monaco-loader');
 const { remote } = require('electron');
 const Mousetrap = require('mousetrap')
 
-Mousetrap.bind('esc', () => { remote.getCurrentWindow().close() })
 
 monacoLoader().then((monaco) => {
-  var diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
+  const originalText = remote.process.argv[1] != '.' ? remote.process.argv[1] : './original.txt';
+  const modifiedText = remote.process.argv[2] || './modified.txt';
   
-  monaco.Promise.join([xhr(remote.process.argv[1]), xhr(remote.process.argv[2])]).then((r) => {
+  const diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
+  document.getElementById("container").focus();
+  
+  monaco.Promise.join([xhr(originalText), xhr(modifiedText)]).then((r) => {
     var originalTxt = r[0].responseText;
     var modifiedTxt = r[1].responseText;
 
@@ -16,6 +19,12 @@ monacoLoader().then((monaco) => {
       modified: monaco.editor.createModel(modifiedTxt, 'text/plain')
     }); 
   })
+
+
+  Mousetrap.bind('esc', () => { remote.getCurrentWindow().close() })
+  var myBinding = diffEditor.addCommand(monaco.KeyCode.Escape, function() {
+    remote.getCurrentWindow().close()
+  });
 
 }) 
 
