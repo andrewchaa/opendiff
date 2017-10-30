@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "package": "rm -rf out | electron-packager . --appname opendiff --out out"
+    "packagemac": "rm -rf out | electron-packager . --appname opendiff --out out",
+    "packagewin": "rimraf out | electron-packager . --appname opendiff --out out"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
