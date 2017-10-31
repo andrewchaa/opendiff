@@ -5,10 +5,11 @@ const Mousetrap = require('mousetrap')
 
 monacoLoader().then((monaco) => {
   console.log(remote.process.argv)
+  console.log(remote.process.cwd())
 
   const argvPresent = remote.process.argv.length >= 3;
   const originalText = argvPresent ? remote.process.argv[1] : './original.txt';
-  const modifiedText = argvPresent ? remote.process.argv[2] : './modified.txt';
+  const modifiedText = argvPresent ? remote.process.cwd() + '/' + remote.process.argv[2] : './modified.txt';
 
   const diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
   document.getElementById("container").focus();
