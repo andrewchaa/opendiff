@@ -11,7 +11,9 @@ monacoLoader().then((monaco) => {
   const originalText = argvPresent ? remote.process.argv[1] : './original.txt';
   const modifiedText = argvPresent ? remote.process.cwd() + '/' + remote.process.argv[2] : './modified.txt';
 
-  const diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"));
+  const diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"), {
+    automaticLayout: true
+  })
   document.getElementById("container").focus();
   
   monaco.Promise.join([xhr(originalText), xhr(modifiedText)]).then((r) => {
@@ -32,6 +34,11 @@ monacoLoader().then((monaco) => {
 
 }) 
 
+const currentWindow = remote.getCurrentWindow()
+currentWindow.on('resize', () => {
+  console.log('resize')
+  document.getElementById("container").setAttribute('style', 'height: 100vh;width: 100vw;')
+})
 
 function xhr(url) {
   var req = null;
