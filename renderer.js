@@ -2,7 +2,6 @@ const monacoLoader = require('monaco-loader');
 const { remote } = require('electron');
 const Mousetrap = require('mousetrap')
 
-
 monacoLoader().then((monaco) => {
   console.log(remote.process.argv)
   console.log(remote.process.cwd())
@@ -14,7 +13,6 @@ monacoLoader().then((monaco) => {
   const diffEditor = monaco.editor.createDiffEditor(document.getElementById("container"), {
     automaticLayout: true
   })
-  document.getElementById("container").focus();
   
   monaco.Promise.join([xhr(originalText), xhr(modifiedText)]).then((r) => {
     var originalTxt = r[0].responseText;
@@ -26,19 +24,21 @@ monacoLoader().then((monaco) => {
     }); 
   })
 
+  const navigator = monaco.editor.createDiffNavigator(diffEditor, 
+    { followsCaret: true, ignoreCharChanges: true 
+  })
+  navigator.next();
 
-  Mousetrap.bind('esc', () => { remote.getCurrentWindow().close() })
-  var myBinding = diffEditor.addCommand(monaco.KeyCode.Escape, function() {
-    remote.getCurrentWindow().close()
-  });
+  Mousetrap.bind('esc', () => remote.getCurrentWindow().close())
+  Mousetrap.bind('up', () => navigator.previous())
+  Mousetrap.bind('down', () => navigator.next())
+
+  var myBinding = diffEditor.addCommand(monaco.KeyCode.Escape, () => remote.getCurrentWindow().close())
+  var myBinding = diffEditor.addCommand(monaco.KeyCode.DownArrow, () => navigator.next())
+  var myBinding = diffEditor.addCommand(monaco.KeyCode.UpArrow, () => navigator.previous())
+
 
 }) 
-
-const currentWindow = remote.getCurrentWindow()
-currentWindow.on('resize', () => {
-  console.log('resize')
-  document.getElementById("container").setAttribute('style', 'height: 100vh;width: 100vw;')
-})
 
 function xhr(url) {
   var req = null;
